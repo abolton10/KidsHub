@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Project</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">password</string>
+    <string name="register">Register</string>
+    <string name="go_to_login">Go to Login</string>
+    <string name="go_to_register">Go to Register</string>
+    <string name="click_to_register">Click to Register</string>
+    <string name="logout">Logout</string>
+    <string name="generate_qr_code">Generate QR code</string>
+    <string name="back">back</string>
+    <string name="name">Name</string>
+    <string name="create_entry">Create Entry</string>
+    <string name="student_id">Student ID</string>
+    <string name="store">Store</string>
+    <string name="make_entry">Make entry</string>
+</resources>
