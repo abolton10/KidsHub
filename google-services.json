@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "442033487036",
+    "firebase_url": "https://pickpuppal-default-rtdb.firebaseio.com",
+    "project_id": "pickpuppal",
+    "storage_bucket": "pickpuppal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442033487036:android:e488ea99efb2e9e60ae4b9",
+        "android_client_info": {
+          "package_name": "com.example.pickuppal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8-rMQ95rQbrVIuMvUuzDgy_TUICPqv1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
