@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ import java.util.Objects;
 public class CreateDB extends AppCompatActivity {
 
     TextInputEditText editName, editEmail, editSId;
-    Button btn;
+    Button btn, button;
     private DatabaseReference parentRef, nameRef, emailRef, SIdRef;
     private double userIdCounter = 0001;
     @Override
@@ -30,12 +31,13 @@ public class CreateDB extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_create_db);
 
-        parentRef = FirebaseDatabase.getInstance().getReference().child("Parents").child("key");
-        nameRef = FirebaseDatabase.getInstance().getReference().child("Parents").child("name");
-        emailRef = FirebaseDatabase.getInstance().getReference().child("Parents").child("Email");
-        SIdRef = FirebaseDatabase.getInstance().getReference().child("Parents").child("Email");
+        parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
+        nameRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("name");
+        emailRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
+        SIdRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
 
         btn = findViewById(R.id.DBButton);
+        button = findViewById(R.id.back);
         editName=findViewById(R.id.Name);
         editEmail=findViewById(R.id.DBEmail);
         editSId=findViewById(R.id.Std_id);
@@ -64,6 +66,15 @@ public class CreateDB extends AppCompatActivity {
                 //nameRef.setValue(name);
                 //SIdRef.setValue(SId);
 
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

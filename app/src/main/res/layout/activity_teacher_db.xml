@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="top"
     android:layout_height="match_parent"
-    tools:context=".CreateDB">
+    tools:context=".teacherDB">
 
     <TextView
         android:id="@+id/textView"
@@ -40,12 +40,12 @@
         android:layout_margin="10dp">
 
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/DBEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:gravity="center"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/DBEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:gravity="center"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back" />
-    </com.google.android.material.bottomappbar.BottomAppBar>
 
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
 </LinearLayout>
