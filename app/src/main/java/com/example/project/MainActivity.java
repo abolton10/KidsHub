@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         TeacherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), teacherDB.class);
                 startActivity(intent);
                 finish();
