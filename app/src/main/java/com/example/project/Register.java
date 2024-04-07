@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mAuth;
     TextView textView;
 
+    RadioGroup roleSelect;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -57,6 +60,7 @@ public class Register extends AppCompatActivity {
         editTextPassword= findViewById(R.id.password);
         ButtonReg = findViewById(R.id.btn_register);
         textView= findViewById(R.id.goLogin);
+        roleSelect = findViewById(R.id.role_select);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +77,7 @@ public class Register extends AppCompatActivity {
                 String email, password;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                int selectedRoleId = roleSelect.getCheckedRadioButtonId();
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter Email",Toast.LENGTH_SHORT).show();
@@ -84,11 +89,20 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                if (selectedRoleId == -1) {
+                    // No role selected
+                    Toast.makeText(Register.this, "Please select a role.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    // Registration successful, redirect to appropriate activity based on role
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    redirectToRoleActivity(user);
                                     // Sign in success, update UI with the signed-in user's information
                                     Toast.makeText(Register.this, "Authentication passed.",
                                             Toast.LENGTH_SHORT).show();
@@ -112,5 +126,21 @@ public class Register extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });*/
+    }
+
+    private void redirectToRoleActivity(FirebaseUser user) {
+        if (user != null) {
+            int selectedRoleId = roleSelect.getCheckedRadioButtonId();
+            Intent intent;
+            if (selectedRoleId == R.id.role_Teacher) {
+                // Teacher role selected
+                intent = new Intent(getApplicationContext(), teacherDB.class);
+            } else {
+                // Parent role selected (default if no role selected)
+                intent = new Intent(getApplicationContext(), CreateDB.class);
+            }
+            startActivity(intent);
+            finish();
+        }
     }
 }

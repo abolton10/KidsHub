@@ -12,6 +12,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,6 +27,7 @@ public class CreateDB extends AppCompatActivity {
     Button btn, button;
     private DatabaseReference parentRef, nameRef, emailRef, SIdRef;
     private double userIdCounter = 0001;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class CreateDB extends AppCompatActivity {
         setContentView(R.layout.activity_create_db);
 
         parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
+        mAuth = FirebaseAuth.getInstance();
         nameRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("name");
         emailRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
         SIdRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
@@ -54,14 +58,19 @@ public class CreateDB extends AppCompatActivity {
                 String name= Objects.requireNonNull(editName.getText()).toString();
                 String Email= Objects.requireNonNull(editEmail.getText()).toString();
                 Double SId= userIdCounter++;
-                String parentID = parentRef.push().getKey();
+
+                String parentID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
 
 
                 DatabaseReference newParentRef = parentRef.child(parentID);
                 newParentRef.child("name").setValue(name);
+                //DatabaseReference newNameRef = newParentRef.child(name);
+                //newNameRef.child("email").setValue(Email);
+                //newNameRef.child("SId").setValue(SId);
+
                 newParentRef.child("email").setValue(Email);
-                newParentRef.child("SId").setValue(SId);
+                //newParentRef.child("SId").setValue(SId);
                 //emailRef.setValue(Email);
                 //nameRef.setValue(name);
                 //SIdRef.setValue(SId);

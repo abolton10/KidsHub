@@ -21,12 +21,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class Login extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword;
     Button ButtonLog;
     FirebaseAuth mAuth;
+
+    DatabaseReference userRef;
     TextView textView;
 
     @Override
@@ -48,6 +54,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        userRef = FirebaseDatabase.getInstance().getReference();
+
         editTextEmail= findViewById(R.id.Email);
         editTextPassword= findViewById(R.id.password);
         ButtonLog = findViewById(R.id.btn_login);
@@ -85,6 +93,8 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // If sign in succeeds, display a message to the user.
+
+                                    String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
                                     Toast.makeText(Login.this, "Authentication passed.",
                                             Toast.LENGTH_SHORT).show();

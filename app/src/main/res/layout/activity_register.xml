@@ -41,6 +41,32 @@
             android:hint="@string/password" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:text="@string/register_as"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="left"/>
+
+    <RadioGroup
+        android:id="@+id/role_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/role_Teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/teacher" />
+
+        <RadioButton
+            android:id="@+id/role_Parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parent" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/btn_register"
         android:text="@string/register"

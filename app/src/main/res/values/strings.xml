@@ -20,4 +20,8 @@
     <string name="scanner">Scanner</string>
     <string name="generate">Generate</string>
     <string name="generated">Generated</string>
+    <string name="enter_full_name">Enter Full Name</string>
+    <string name="parent">Parent</string>
+    <string name="teacher">Teacher</string>
+    <string name="register_as">register as:</string>
 </resources>
