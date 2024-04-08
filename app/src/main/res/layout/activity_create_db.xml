@@ -64,6 +64,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Add ImageView to display the selected image -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Add ImageButton to select an image -->
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/ic_menu_gallery" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

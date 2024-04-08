@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,8 @@ public class CreateDB extends AppCompatActivity {
 
     TextInputEditText editName, editEmail, editSId;
     Button btn, button;
+    ImageButton imageButton;
+    ImageView imageView;
     private DatabaseReference parentRef, nameRef, emailRef, SIdRef;
     private double userIdCounter = 0001;
     private FirebaseAuth mAuth;
@@ -45,6 +49,8 @@ public class CreateDB extends AppCompatActivity {
         editName=findViewById(R.id.Name);
         editEmail=findViewById(R.id.DBEmail);
         editSId=findViewById(R.id.Std_id);
+        imageView = findViewById(R.id.imageView);
+        imageButton = findViewById(R.id.imageButton);
 
 
 

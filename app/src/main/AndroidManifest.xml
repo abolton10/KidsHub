@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Material3.Dark"
         tools:targetApi="31">
         <activity
+            android:name=".parentprofile"
+            android:exported="false" />
+        <activity
             android:name=".teacherDB"
             android:exported="false" />
         <activity

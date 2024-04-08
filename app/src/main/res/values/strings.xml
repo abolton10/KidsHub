@@ -24,4 +24,7 @@
     <string name="parent">Parent</string>
     <string name="teacher">Teacher</string>
     <string name="register_as">register as:</string>
+    <string name="parent_name">Parent Name</string>
+    <string name="license_number">License Number</string>
+    <string name="see_profile">See Profile</string>
 </resources>
