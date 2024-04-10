@@ -1,0 +1,117 @@
+package com.example.pickuppal;
+
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+public class QueueActivity extends AppCompatActivity {
+
+    private DatabaseReference parentQueueRef;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_queue);
+
+        // Initialize Firebase database reference
+        parentQueueRef = FirebaseDatabase.getInstance().getReference().child("parentQueue");
+
+        // Check proximity to school
+        boolean isNearSchool = checkProximityToSchool();
+
+        if (isNearSchool) {
+            // If near school, generate QR code
+            generateQRCode();
+        } else {
+            // Display message to user indicating they are not near school
+            Toast.makeText(this, "You are not in proximity to the school. Check in once you are closer!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkProximityToSchool() {
+        double schoolLatitude = 33.75;
+        double schoolLongitude = -84.39; // GSU location
+        float radius = 804; // within half a mile of the school
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (locationManager != null) {
+            Location userLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (userLocation != null) {
+                double userLatitude = userLocation.getLatitude();
+                double userLongitude = userLocation.getLongitude();
+
+                float[] results = new float[1];
+                Location.distanceBetween(userLatitude, userLongitude, schoolLatitude, schoolLongitude, results);
+                float distanceInMeters = results[0];
+
+                return distanceInMeters <= radius;
+            }
+        }
+        return false;
+    }
+
+    private void generateQRCode() {
+        // Generate QR code for the parent
+        String parentID = "1234"; // Set parent ID to 1234 
+        addParentToQueue(parentID);
+    }
+
+    private void addParentToQueue(String parentID) {
+        // Add parent to the queue in the database
+        parentQueueRef.child(parentID).setValue(true);
+    }
+
+    private void removeParentFromQueue(String parentID) {
+        // Remove parent from the queue in the database
+        parentQueueRef.child(parentID).removeValue();
+    }
+
+    private void handleQRCodeScanned(String scannedData) {
+        // Check if scanned data corresponds to a parent in the queue
+        if (isParentInQueue(scannedData)) {
+            removeParentFromQueue(scannedData);
+        } else {
+            // Display message to user indicating invalid QR code
+            Toast.makeText(this, "Invalid QR code", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private boolean isParentInQueue(String parentIdentifier) {
+        // Retrieve a reference to the Firebase database node where the parent queue is stored
+        DatabaseReference parentQueueRef = FirebaseDatabase.getInstance().getReference().child("parentQueue");
+
+        // Query the database to check if the parent identifier exists in the queue
+        AtomicBoolean isInQueue = new AtomicBoolean(false);
+
+        parentQueueRef.child(parentIdentifier).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // If the snapshot exists, the parent is in the queue
+                isInQueue.set(snapshot.exists());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        // Return the result after the onDataChange method has been executed
+        return isInQueue.get();
+    }
+    private void handleLeavingProximityOfSchool(String parentIdentifier) {
+        // Check if parent is in the queue
+        if (isParentInQueue(parentIdentifier)) {
+            removeParentFromQueue(parentIdentifier);
+        }
+    }
+}
