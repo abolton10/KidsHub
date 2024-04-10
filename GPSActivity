@@ -23,7 +23,7 @@ public class GPSActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_location);
+        //setContentView(R.layout.activity_gps);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         getLocation();
@@ -43,6 +43,12 @@ public class GPSActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             // Handle location updates here
             Toast.makeText(GPSActivity.this, "Latitude: " + location.getLatitude() + "\nLongitude: " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+
+            // Start QueueActivity and pass location data
+            Intent intent = new Intent(GPSActivity.this, QueueActivity.class);
+            intent.putExtra("latitude", location.getLatitude());
+            intent.putExtra("longitude", location.getLongitude());
+            startActivity(intent);
         }
 
         @Override
