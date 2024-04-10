@@ -27,4 +27,17 @@
     <string name="parent_name">Parent Name</string>
     <string name="license_number">License Number</string>
     <string name="see_profile">See Profile</string>
+    <string name="editinfo">editinfo</string>
+    <string name="searchinfo">searchinfo</string>
+    <string name="pickup_pal">Pickup Pal</string>
+    <string name="todo">todo</string>
+    <string name="are_you_picking_up_your_child">Are you Picking up your child?</string>
+    <string name="time">time</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="teacher_profile">Teacher Profile</string>
 </resources>

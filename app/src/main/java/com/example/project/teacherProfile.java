@@ -32,9 +32,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
-//import kotlinx.coroutines.scheduling.Task;
-
-public class parentprofile extends AppCompatActivity {
+public class teacherProfile extends AppCompatActivity {
     ImageView profileImageView;
     TextView FnameTextView, LnameTextView, PhoneTextView, emailTextView;
     DatabaseReference parentRef;
@@ -43,15 +41,15 @@ public class parentprofile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parentprofile);
-
+        //EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_teacher_profile);
 
         profileImageView = findViewById(R.id.profile_image_view);
         FnameTextView = findViewById(R.id.fname);
         LnameTextView = findViewById(R.id.lname);
         PhoneTextView = findViewById(R.id.PhoneNo);
         emailTextView = findViewById(R.id.Email);
-        parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
+        parentRef = FirebaseDatabase.getInstance().getReference().child("Teacher");
         mAuth = FirebaseAuth.getInstance();
 
         String parentID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -73,7 +71,7 @@ public class parentprofile extends AppCompatActivity {
 
                     // Load profile image using Glide
                     if (imageUrl != null) {
-                        Glide.with(parentprofile.this)
+                        Glide.with(teacherProfile.this)
                                 .load(imageUrl).into(profileImageView);
 
                     } else {
@@ -88,4 +86,8 @@ public class parentprofile extends AppCompatActivity {
             }
         });
     }
-}
+
+
+
+
+    }

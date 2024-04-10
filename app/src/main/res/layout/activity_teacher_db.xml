@@ -26,10 +26,36 @@
         android:layout_margin="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Name"
+            android:id="@+id/FName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_full_name"
+            android:hint="@string/first_name"
+            android:gravity="center"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/LName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            android:gravity="center"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/PhoneNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
             android:gravity="center"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,20 +75,24 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- Add ImageView to display the selected image -->
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
+        android:layout_height="200dp"
+
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Add ImageButton to select an image -->
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
 
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Std_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/student_id"
-            android:gravity="center"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginTop="16dp"
+        android:src="@android:drawable/ic_menu_gallery" />
 
     <Button
         android:layout_width="wrap_content"

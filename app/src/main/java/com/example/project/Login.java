@@ -136,7 +136,7 @@ public class Login extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // User is a parent, redirect to parent activity
-                    Intent intent = new Intent(getApplicationContext(), CreateDB.class);
+                    Intent intent = new Intent(getApplicationContext(), parentMain.class);
                     startActivity(intent);
                     finish();
                 } else {
@@ -146,7 +146,7 @@ public class Login extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 // User is a teacher, redirect to teacher activity
-                                Intent intent = new Intent(getApplicationContext(), teacherDB.class);
+                                Intent intent = new Intent(getApplicationContext(), teacherMain.class);
                                 startActivity(intent);
                                 finish();
                             } else {

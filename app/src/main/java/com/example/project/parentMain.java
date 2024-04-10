@@ -1,24 +1,28 @@
 package com.example.project;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class parentMain extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button button, btn, b, TeacherBtn, parentBtn, tProfile;
+    Button button, btn, b, parentBtn;
     TextView textView;
     FirebaseUser user;
 
@@ -26,19 +30,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_parent_main);
 
         auth = FirebaseAuth.getInstance();
-        tProfile= findViewById(R.id.tProf);
         parentBtn = findViewById(R.id.parentProf);
         button = findViewById(R.id.logout);
-        btn = findViewById(R.id.QRcode);
+        btn = findViewById(R.id.qrgen);
         b = findViewById(R.id.Database);
-        TeacherBtn = findViewById(R.id.TDb);
+
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
-
-
 
         if (user == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -58,19 +59,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       tProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), teacherProfile.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QR_code.class);
+                Intent intent = new Intent(getApplicationContext(), generate.class);
                 startActivity(intent);
                 finish();
             }
@@ -94,17 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        TeacherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), teacherDB.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
 
     }
 }

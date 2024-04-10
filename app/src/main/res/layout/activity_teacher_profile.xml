@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".parentprofile">
+    tools:context=".teacherProfile">
 
     <TextView
         android:id="@+id/fname"
@@ -49,5 +49,7 @@
         android:layout_below="@id/Email"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"/>
+
+
 
 </RelativeLayout>

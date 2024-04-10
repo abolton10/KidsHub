@@ -5,40 +5,22 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".parentprofile">
+    tools:context=".teacherScan">
 
     <TextView
-        android:id="@+id/fname"
+        android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/first_name"
+        android:text="@string/parent_name"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:id="@+id/lname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/last_name"
-        android:layout_toEndOf="@+id/fname"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/PhoneNo"
+        android:id="@+id/emailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
-        android:layout_below="@id/fname"
-        android:layout_marginTop="8dp"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/email"
-        android:layout_below="@id/PhoneNo"
+        android:layout_below="@id/nameTextView"
         android:layout_marginTop="8dp"
         android:layout_centerHorizontal="true"/>
 
@@ -46,8 +28,9 @@
         android:id="@+id/profile_image_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_below="@id/Email"
+        android:layout_below="@id/emailTextView"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
+

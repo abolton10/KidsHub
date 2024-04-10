@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".parentMain">
 
     <TextView
         android:id="@+id/user_details"
@@ -28,22 +28,11 @@
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/TDb"
-        android:text="@string/add_teacher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/tProf"
-        android:text="@string/teacher_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/QRcode"
+        android:id="@+id/qrgen"
         android:text="@string/generate_qr_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
 
     <Button
         android:id="@+id/logout"
