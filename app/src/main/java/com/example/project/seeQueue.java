@@ -1,6 +1,8 @@
 package com.example.project;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ public class seeQueue extends AppCompatActivity {
     private DatabaseReference parentRef;
     private TextView queuePositionText;
     private FirebaseAuth mAuth;
+    Button back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +30,11 @@ public class seeQueue extends AppCompatActivity {
         parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
         queuePositionText = findViewById(R.id.queue_position_text);
         mAuth = FirebaseAuth.getInstance();
+        back = findViewById(R.id.back);
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(seeQueue.this, QueueActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override

@@ -15,30 +15,18 @@
         android:layout_marginTop="16dp"
         android:contentDescription="qr_code_description" />
 
-    <!-- Layout for pickup confirmation message -->
-    <LinearLayout
-        android:id="@+id/pickup_confirmation_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
         <!-- Pickup confirmation text -->
-        <TextView
-            android:id="@+id/pickup_confirmation_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical|start"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <!-- Button to view user's position in the queue -->
+    <TextView
+        android:id="@+id/user_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewqueue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/was_your_child_picked_up_safely" />
+
     <Button
         android:id="@+id/viewqueue"
         android:layout_width="wrap_content"
@@ -46,15 +34,41 @@
         android:layout_below="@id/qr_code"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="View Position in Queue" />
+        android:text="@string/view_position_in_queue" />
+
+    <!-- Yes button -->
+
+    <!-- No button -->
+
+    <!-- Back button -->
 
     <Button
-        android:id="@+id/back"
-        android:text="@string/back"
+        android:id="@+id/confirm_pickup_yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="100dp"
+        android:text="Yes" />
+
+    <Button
+        android:id="@+id/confirm_pickup_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="147dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="100dp"
+        android:layout_toEndOf="@id/confirm_pickup_yes"
+        android:text="No" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

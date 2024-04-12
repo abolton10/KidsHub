@@ -37,11 +37,11 @@ public class QueueActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
     private DatabaseReference parentQueueRef, parentRef, studentRef, positionRef; //reference position
     private ImageView imageView; //qrcode
-    private LinearLayout pickupConfirmationLayout;
     private TextView queuePositionText;
     private Button back, viewqueue;
     private FirebaseAuth mAuth;
     private String currentUser;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +51,11 @@ public class QueueActivity extends AppCompatActivity {
 
         parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
         parentQueueRef = FirebaseDatabase.getInstance().getReference().child("queue");
-        pickupConfirmationLayout = findViewById(R.id.pickup_confirmation_layout);
         imageView = findViewById(R.id.qr_code);
         back = findViewById(R.id.back);
         viewqueue = findViewById(R.id.viewqueue);
         mAuth = FirebaseAuth.getInstance();
+        textView = findViewById(R.id.user_details);
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         viewqueue.setOnClickListener(v -> {
@@ -66,6 +66,16 @@ public class QueueActivity extends AppCompatActivity {
         back.setOnClickListener(v -> {
             Intent intent = new Intent(QueueActivity.this, parentMain.class);
             startActivity(intent);
+        });
+        Button confirmPickupYes = findViewById(R.id.confirm_pickup_yes);
+        Button confirmPickupNo = findViewById(R.id.confirm_pickup_no);
+
+        confirmPickupYes.setOnClickListener(v -> {
+            leaveQueueAndUpdatePosition(true); // Confirm pickup
+        });
+
+        confirmPickupNo.setOnClickListener(v -> {
+            leaveQueueAndUpdatePosition(false); // Reject pickup
         });
 
         requestLocationPermissions();
