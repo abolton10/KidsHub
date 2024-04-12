@@ -41,6 +41,16 @@ public class generate extends AppCompatActivity {
         EditText editText = findViewById(R.id.edit_text);
         Button gen = findViewById(R.id.gen);
         ImageView imageView = findViewById(R.id.qr_code);
+        Button back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(generate.this, teacherMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         gen.setOnClickListener(new View.OnClickListener() {
             @Override

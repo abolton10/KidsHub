@@ -46,7 +46,7 @@ public class teacherMain extends AppCompatActivity {
             }
         });
 
-       editinfo.setOnClickListener(new View.OnClickListener() {
+        editinfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), teacherProfile.class);
@@ -76,11 +76,6 @@ public class teacherMain extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result-> {
             if(result.getContents() !=null) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(teacherMain.this);
@@ -96,7 +91,6 @@ public class teacherMain extends AppCompatActivity {
         });
 
     }
-
     private void scanCode() {
         ScanOptions options = new ScanOptions();
         options.setPrompt("Volume up to turn on flash");
@@ -105,7 +99,6 @@ public class teacherMain extends AppCompatActivity {
         options.setCaptureActivity(CaptureAct.class);
         barLauncher.launch(options);
     }
-
     ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result-> {
         if(result.getContents() !=null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(teacherMain.this);
@@ -119,6 +112,5 @@ public class teacherMain extends AppCompatActivity {
             }).show();
         }
     });
-
 
 }
