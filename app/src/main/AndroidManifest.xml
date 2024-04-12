@@ -13,8 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.Dark"
+        android:theme="@style/Base.Theme.Project"
         tools:targetApi="31">
+        <activity
+            android:name=".tParentProfile"
+            android:exported="false" />
         <activity
             android:name=".teacherProfile"
             android:exported="false" />
@@ -37,9 +40,6 @@
             android:name=".teacherDB"
             android:exported="false" />
         <activity
-            android:name=".Teacher"
-            android:exported="false" />
-        <activity
             android:name=".generate"
             android:exported="false" />
         <activity
@@ -51,11 +51,7 @@
         <activity
             android:name=".Register"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Dark.NoActionBar" />
-        <activity
-            android:name=".Login"
-            android:exported="true"
-            android:theme="@style/Theme.Material3.Dark.NoActionBar" />
+            android:theme="@style/Base.Theme.Project" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

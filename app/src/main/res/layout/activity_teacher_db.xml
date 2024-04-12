@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="top"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".teacherDB">
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:text="@string/create_entry"
+        android:text="@string/edit_profile"
         android:textSize="30sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="20dp" />
@@ -75,38 +75,45 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Add ImageView to display the selected image -->
-    <ImageView
-        android:id="@+id/imageView"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
 
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop" />
 
-    <!-- Add ImageButton to select an image -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Std_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/class_id"
+            android:gravity="center"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:src="@android:drawable/ic_menu_gallery" />
 
     <Button
+        android:id="@+id/DBButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/store"
         android:layout_marginBottom="10dp"
-        android:id="@+id/DBButton"/>
+        android:text="@string/store" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:backgroundTint="@color/cadmium_violet"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="1dp"

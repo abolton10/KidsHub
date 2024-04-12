@@ -17,6 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.project.CreateDB;
+import com.example.project.R;
+import com.example.project.parentMain;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,49 +35,34 @@ import com.bumptech.glide.Glide;
 
 import java.util.Objects;
 
-public class teacherProfile extends AppCompatActivity {
+//import kotlinx.coroutines.scheduling.Task;
+
+public class tParentProfile extends AppCompatActivity {
     ImageView profileImageView;
     TextView FnameTextView, LnameTextView, PhoneTextView, emailTextView;
     DatabaseReference parentRef;
     FirebaseAuth mAuth;
 
-    Button a, b;
+    Button b, back;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_teacher_profile);
+        setContentView(R.layout.activity_parentprofile);
 
+
+        back = findViewById(R.id.back);
         profileImageView = findViewById(R.id.profile_image_view);
         FnameTextView = findViewById(R.id.fname);
         LnameTextView = findViewById(R.id.lname);
         PhoneTextView = findViewById(R.id.PhoneNo);
         emailTextView = findViewById(R.id.Email);
-        a = findViewById(R.id.EditProfile);
-        b = findViewById(R.id.back);
-        parentRef = FirebaseDatabase.getInstance().getReference().child("Teacher");
+        parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
         mAuth = FirebaseAuth.getInstance();
 
-        String parentID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        String parentID = getIntent().getStringExtra("parentID");
         DatabaseReference parentInfoRef = parentRef.child(parentID);
-
-        a.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), teacherDB.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), teacherMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         parentInfoRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,7 +80,7 @@ public class teacherProfile extends AppCompatActivity {
 
                     // Load profile image using Glide
                     if (imageUrl != null) {
-                        Glide.with(teacherProfile.this)
+                        Glide.with(com.example.project.tParentProfile.this)
                                 .load(imageUrl).into(profileImageView);
 
                     } else {
@@ -106,9 +94,18 @@ public class teacherProfile extends AppCompatActivity {
                 // Handle error
             }
         });
+
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), teacherMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
 
-
-
-    }
+}

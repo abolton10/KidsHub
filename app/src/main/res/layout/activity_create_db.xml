@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="top"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".CreateDB">
 
     <TextView
@@ -90,38 +90,30 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Add ImageView to display the selected image -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
 
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop" />
 
-    <!-- Add ImageButton to select an image -->
+
+
+
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="5dp"
         android:src="@android:drawable/ic_menu_gallery" />
 
     <Button
+        android:id="@+id/DBButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/store"
         android:layout_marginBottom="10dp"
-        android:id="@+id/DBButton"/>
+        android:text="@string/store" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:backgroundTint="@color/cadmium_violet"
         app:fabCradleMargin="10dp"
         app:fabCradleRoundedCornerRadius="1dp"

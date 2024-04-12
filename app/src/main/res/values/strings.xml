@@ -40,4 +40,9 @@
     <string name="last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="teacher_profile">Teacher Profile</string>
+    <string name="qr_code_join_queue">QR Code(join queue)</string>
+    <string name="phone">Phone</string>
+    <string name="class_id">Class Id</string>
+    <string name="view_profile">View Profile</string>
+    <string name="teacher_page">Teacher Page</string>
 </resources>

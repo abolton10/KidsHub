@@ -64,7 +64,7 @@ public class CreateDB extends AppCompatActivity {
         editPhoneNo=findViewById(R.id.PhoneNo);
         editEmail=findViewById(R.id.DBEmail);
         editSId=findViewById(R.id.Std_id);
-        imageView = findViewById(R.id.imageView);
+
 
 
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,8 @@ public class CreateDB extends AppCompatActivity {
                 String Lname= Objects.requireNonNull(editLName.getText()).toString();
                 String PhoneNo= Objects.requireNonNull(editPhoneNo.getText()).toString();
                 String Email= Objects.requireNonNull(editEmail.getText()).toString();
-                String SId= Objects.requireNonNull(editSId.getText()).toString();;
+                String SId= Objects.requireNonNull(editSId.getText()).toString();
+                //double x = 0;
                 String Image = String.valueOf(imageUri);
 
                 String parentID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
@@ -98,6 +99,7 @@ public class CreateDB extends AppCompatActivity {
                 newParentRef.child("Phone No").setValue(PhoneNo);
                 newParentRef.child("email").setValue(Email);
                 newParentRef.child("SId").setValue(SId);
+                newParentRef.child("Position").setValue(0);
 
 
                 // Save the image if available
@@ -157,6 +159,7 @@ public class CreateDB extends AppCompatActivity {
             Toast.makeText(CreateDB.this, "Failed to upload image!", Toast.LENGTH_SHORT).show();
         });
     }
+
 
 
 

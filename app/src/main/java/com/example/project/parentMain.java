@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -22,7 +24,7 @@ import android.widget.TextView;
 public class parentMain extends AppCompatActivity {
 
     FirebaseAuth auth;
-    Button button, btn, b, parentBtn;
+    Button button, btn, b, parentBtn, viewQR;
     TextView textView;
     FirebaseUser user;
 
@@ -32,17 +34,19 @@ public class parentMain extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_parent_main);
 
+        viewQR = findViewById(R.id.viewQR);
+
         auth = FirebaseAuth.getInstance();
         parentBtn = findViewById(R.id.parentProf);
         button = findViewById(R.id.logout);
         btn = findViewById(R.id.qrgen);
-        b = findViewById(R.id.Database);
+
 
         textView = findViewById(R.id.user_details);
         user = auth.getCurrentUser();
 
         if (user == null){
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -50,31 +54,25 @@ public class parentMain extends AppCompatActivity {
             textView.setText(user.getEmail());
         }
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CreateDB.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), generate.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        viewQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent leadQR = new Intent(parentMain.this, QueueActivity.class);
+                //startActivity(leadQR);
             }
         });
 

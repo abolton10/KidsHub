@@ -15,11 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
-    <Button
-        android:id="@+id/Database"
-        android:text="@string/add_parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
 
     <Button
         android:id="@+id/parentProf"
@@ -27,9 +23,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+
+
     <Button
-        android:id="@+id/qrgen"
-        android:text="@string/generate_qr_code"
+        android:id="@+id/viewQR"
+        android:text="@string/qr_code_join_queue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

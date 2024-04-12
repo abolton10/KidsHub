@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class teacherMain extends AppCompatActivity {
     FirebaseAuth auth;
-    Button btn_scan, qrgen, editinfo, searchid;
+    Button btn_scan, qrgen, editinfo, searchid, button;
     TextView textView;
     FirebaseUser user;
 
@@ -34,11 +34,22 @@ public class teacherMain extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_teacher_main);
 
+        editinfo = findViewById(R.id.editinfo);
+        button = findViewById(R.id.logout);
         qrgen =findViewById(R.id.qrgen);
         qrgen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), generate.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+       editinfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), teacherProfile.class);
                 startActivity(intent);
                 finish();
             }
@@ -50,6 +61,16 @@ public class teacherMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), QRCodeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -98,4 +119,6 @@ public class teacherMain extends AppCompatActivity {
             }).show();
         }
     });
+
+
 }

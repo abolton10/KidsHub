@@ -41,23 +41,22 @@ public class teacherDB extends AppCompatActivity {
     ImageButton imageButton;
     ImageView imageView;
     private DatabaseReference parentRef, nameRef, emailRef, SIdRef;
-
+    private double userIdCounter = 0001;
     private FirebaseAuth mAuth;
     private Uri imageUri;
     private StorageReference imageStorageRef;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_teacher_db);
+        setContentView(R.layout.activity_create_db);
 
-        mAuth = FirebaseAuth.getInstance();
-        imageStorageRef = FirebaseStorage.getInstance().getReference().child("images");
         parentRef = FirebaseDatabase.getInstance().getReference().child("Teacher");
-        nameRef = FirebaseDatabase.getInstance().getReference().child("Teacher").child("name");
-        emailRef = FirebaseDatabase.getInstance().getReference().child("Teacher").child("Email");
-        SIdRef = FirebaseDatabase.getInstance().getReference().child("Teacher").child("Email");
+        imageStorageRef = FirebaseStorage.getInstance().getReference().child("images");
+        mAuth = FirebaseAuth.getInstance();
+        nameRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("name");
+        emailRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
+        SIdRef = FirebaseDatabase.getInstance().getReference().child("Parent").child("Email");
 
         btn = findViewById(R.id.DBButton);
         button = findViewById(R.id.back);
@@ -68,7 +67,8 @@ public class teacherDB extends AppCompatActivity {
         editPhoneNo=findViewById(R.id.PhoneNo);
         editEmail=findViewById(R.id.DBEmail);
         editSId=findViewById(R.id.Std_id);
-        imageView = findViewById(R.id.imageView);
+
+
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,34 +79,33 @@ public class teacherDB extends AppCompatActivity {
 
 
 
-
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
                 String Fname= Objects.requireNonNull(editFName.getText()).toString();
                 String Lname= Objects.requireNonNull(editLName.getText()).toString();
                 String PhoneNo= Objects.requireNonNull(editPhoneNo.getText()).toString();
                 String Email= Objects.requireNonNull(editEmail.getText()).toString();
-                String SId= Objects.requireNonNull(editSId.getText()).toString();;
+                String CId= Objects.requireNonNull(editSId.getText()).toString();;
                 String Image = String.valueOf(imageUri);
 
-                String teacherID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                String parentID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
 
 
+                DatabaseReference newParentRef = parentRef.child(parentID);
+                newParentRef.child("First name").setValue(Fname);
+                newParentRef.child("Last name").setValue(Lname);
+                newParentRef.child("Phone No").setValue(PhoneNo);
+                newParentRef.child("email").setValue(Email);
+                newParentRef.child("Class Id").setValue(CId);
 
-                    DatabaseReference newParentRef = parentRef.child(teacherID);
-                    newParentRef.child("First name").setValue(Fname);
-                    newParentRef.child("Last name").setValue(Lname);
-                    newParentRef.child("Phone No").setValue(PhoneNo);
-                    newParentRef.child("email").setValue(Email);
-                    //newParentRef.child("SId").setValue(SId);
 
                 // Save the image if available
                 if (imageUri != null) {
-                    saveImage(teacherID);
+                    saveImage(parentID);
                 }
 
             }
@@ -115,13 +114,11 @@ public class teacherDB extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), teacherProfile.class);
                 startActivity(intent);
                 finish();
             }
         });
-
-
     }
 
     private void chooseImage() {
@@ -143,8 +140,8 @@ public class teacherDB extends AppCompatActivity {
             }
     );
 
-    private void saveImage(String teacherID) {
-        StorageReference filePath = imageStorageRef.child(teacherID + ".jpg");
+    private void saveImage(String parentID) {
+        StorageReference filePath = imageStorageRef.child(parentID + ".jpg");
 
         filePath.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             // Image uploaded successfully
@@ -154,7 +151,7 @@ public class teacherDB extends AppCompatActivity {
             filePath.getDownloadUrl().addOnSuccessListener(uri -> {
                 // Save the download URL to the Realtime Database
                 String imageUrl = uri.toString();
-                DatabaseReference newParentRef = parentRef.child(teacherID);
+                DatabaseReference newParentRef = parentRef.child(parentID);
                 newParentRef.child("imageURL").setValue(imageUrl);
             });
 
@@ -163,6 +160,9 @@ public class teacherDB extends AppCompatActivity {
             Toast.makeText(teacherDB.this, "Failed to upload image!", Toast.LENGTH_SHORT).show();
         });
     }
+
+
+
 
 
 }

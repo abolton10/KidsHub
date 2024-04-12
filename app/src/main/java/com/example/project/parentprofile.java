@@ -40,12 +40,16 @@ public class parentprofile extends AppCompatActivity {
     DatabaseReference parentRef;
     FirebaseAuth mAuth;
 
+    Button b, back;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parentprofile);
 
-
+        b = findViewById(R.id.EditProfile);
+        back = findViewById(R.id.back);
         profileImageView = findViewById(R.id.profile_image_view);
         FnameTextView = findViewById(R.id.fname);
         LnameTextView = findViewById(R.id.lname);
@@ -87,5 +91,25 @@ public class parentprofile extends AppCompatActivity {
                 // Handle error
             }
         });
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateDB.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), parentMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
+
+
 }

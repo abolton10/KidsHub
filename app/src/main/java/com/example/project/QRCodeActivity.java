@@ -60,19 +60,17 @@ public class QRCodeActivity extends AppCompatActivity {
         Query query = parentRef.orderByChild("SId").equalTo(scannedData);
         // Add a ValueEventListener to listen for the query result
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     String parentUid = childSnapshot.getKey();
-                    String studentId = childSnapshot.child("SId").getValue().toString();
+                    String studentId = childSnapshot.child("SId").getValue(String.class);
 
                     if (scannedData.equals(studentId)) {
                         Toast.makeText(QRCodeActivity.this, "Student ID found for Parent with UID: " + parentUid, Toast.LENGTH_SHORT).show();
-                        // Handle the logic to display parent information associated with the student ID
-                        // For example, navigate to the parent information activity
-                        // You can access the parent data using snapshot.getValue() method
-                        // Here you may want to start a new activity to display the parent information
+                        Intent intent = new Intent(QRCodeActivity.this, tParentProfile.class);
+                        intent.putExtra("parentID", parentUid);
+                        startActivity(intent);
                         return;
                     } //else {
                     // Student ID not found in the database
