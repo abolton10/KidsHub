@@ -8,21 +8,18 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.project.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,31 +32,42 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class QueueActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
-
-    private DatabaseReference parentQueueRef;
-    private ImageView imageView;
+    private DatabaseReference parentQueueRef, parentRef, studentRef, positionRef; //reference position
+    private ImageView imageView; //qrcode
     private LinearLayout pickupConfirmationLayout;
     private TextView queuePositionText;
-    FirebaseAuth mAuth;
+    private Button back, viewqueue;
+    private FirebaseAuth mAuth;
+    private String currentUser;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_queue);
 
-        // Initialize Firebase database reference for the parent queue
-        parentQueueRef = FirebaseDatabase.getInstance().getReference().child("parentQueue");
-
-        // Find views by their IDs
-        imageView = findViewById(R.id.qr_code);
+        parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
+        parentQueueRef = FirebaseDatabase.getInstance().getReference().child("queue");
         pickupConfirmationLayout = findViewById(R.id.pickup_confirmation_layout);
-        queuePositionText = findViewById(R.id.queue_position_text);
+        imageView = findViewById(R.id.qr_code);
+        back = findViewById(R.id.back);
+        viewqueue = findViewById(R.id.viewqueue);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // Request location permissions
+        viewqueue.setOnClickListener(v -> {
+            Intent intent = new Intent(QueueActivity.this, seeQueue.class);
+            startActivity(intent);
+        });
+
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(QueueActivity.this, parentMain.class);
+            startActivity(intent);
+        });
+
         requestLocationPermissions();
     }
 
@@ -113,13 +121,49 @@ public class QueueActivity extends AppCompatActivity {
             }
         }
         generateQRCode();
-        showPickupConfirmation("1234");
     }
 
     private void generateQRCode() {
         // Generate QR code for the parent based on the database's SId
-        String SId = "1234"; // Dummy SId for demonstration
-        String data = SId; // Combine parent ID and SId
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            generateQRCodeWithQueue(userId);
+        } else {
+            // Handle if the user is not authenticated
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void generateQRCodeWithQueue(String userId) {
+        // Increment the queue in the database
+        parentQueueRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int currentQueue = dataSnapshot.getValue(Integer.class);
+                    int newQueue = currentQueue + 1;
+
+                    // Update the queue in the database
+                    parentQueueRef.setValue(newQueue);
+
+                    // Update the position of the current user in the database
+                    parentRef.child(userId).child("position").setValue(newQueue);
+
+                    // Generate QR code using the new queue number
+                    generateQRCodeWithQueueNumber(String.valueOf(newQueue));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+    }
+
+    private void generateQRCodeWithQueueNumber(String queueNumber) {
+        String data = queueNumber; // Use queue number as data for QR code
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
@@ -129,77 +173,63 @@ public class QueueActivity extends AppCompatActivity {
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
             imageView.setImageBitmap(bitmap);
-
-            // Add parent to the queue in the database after generating QR code
-            addParentToQueue(SId);
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void addParentToQueue(String SId) {
-        // Add parent to the queue in the database
-        parentQueueRef.child(SId).setValue(true);
-        // Show pickup confirmation message
-        showPickupConfirmation(SId);
-    }
+    private void confirmPickupDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Pickup");
+        builder.setMessage("Was your child picked up safely?");
 
-    private void showPickupConfirmation(String SId) {
-        // Show pickup confirmation message at the bottom
-        pickupConfirmationLayout.setVisibility(View.VISIBLE);
-        Log.d("QueueActivity", "Pickup confirmation layout set to VISIBLE");
-
-        pickupConfirmationLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("QueueActivity", "Pickup confirmation layout clicked");
-                // Show dialog with "Yes" and "No" options
-                new AlertDialog.Builder(QueueActivity.this)
-                        .setMessage("Have you picked up your kid?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // User clicked "Yes"
-                                // Remove parent from the queue after pickup confirmation
-                                removeParentFromQueue(SId);
-                                // Hide pickup confirmation layout
-                                pickupConfirmationLayout.setVisibility(View.GONE);
-                                Log.d("QueueActivity", "Pickup confirmation layout hidden");
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // User clicked "No"
-                                // Optionally handle the case when the user hasn't picked up their kid
-                                // Hide pickup confirmation layout
-                                pickupConfirmationLayout.setVisibility(View.GONE);
-                                Log.d("QueueActivity", "Pickup confirmation layout hidden");
-                            }
-                        })
-                        .show();
+        // Add the buttons
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked Yes button
+                leaveQueueAndUpdatePosition(true);
             }
         });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked No button
+                leaveQueueAndUpdatePosition(false);
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
-    private void removeParentFromQueue(String SId) {
-        // Remove parent from the queue in the database
-        parentQueueRef.child(SId).removeValue();
+    private void leaveQueueAndUpdatePosition(boolean pickedUpSafely) {
+        // Remove the parent from the queue
+        parentRef.child(currentUser).child("position").removeValue();
+
+        // If the child was picked up safely, decrement the queue
+        if (pickedUpSafely) {
+            queueDecrement();
+        }
     }
 
-    private void showQueuePosition(String SId) {
-        // Listen for changes in the queue position
-        parentQueueRef.child(SId).addValueEventListener(new ValueEventListener() {
+    private void queueDecrement() {
+        DatabaseReference parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
+
+        parentQueueRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Get current position in queue
-                long position = snapshot.getChildrenCount();
-                // Update UI with current position
-                queuePositionText.setText("Your position in queue: " + position);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int currentQueue = dataSnapshot.getValue(Integer.class);
+                    int newQueue = currentQueue - 1;
+                    if (newQueue < 0) {
+                        newQueue = 0; // Ensure queue doesn't go negative
+                    }
+                    parentQueueRef.setValue(newQueue);
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError databaseError) {
                 // Handle error
             }
         });

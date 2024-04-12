@@ -40,12 +40,21 @@
 
     <!-- Button to view user's position in the queue -->
     <Button
-        android:id="@+id/queue_position_text"
+        android:id="@+id/viewqueue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/qr_code"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="View Position in Queue" />
+
+    <Button
+        android:id="@+id/back"
+        android:text="@string/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        />
 
 </RelativeLayout>
