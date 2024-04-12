@@ -35,11 +35,9 @@ public class parentMain extends AppCompatActivity {
         setContentView(R.layout.activity_parent_main);
 
         viewQR = findViewById(R.id.viewQR);
-
         auth = FirebaseAuth.getInstance();
         parentBtn = findViewById(R.id.parentProf);
         button = findViewById(R.id.logout);
-        btn = findViewById(R.id.qrgen);
 
 
         textView = findViewById(R.id.user_details);
@@ -71,8 +69,8 @@ public class parentMain extends AppCompatActivity {
         viewQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent leadQR = new Intent(parentMain.this, QueueActivity.class);
-                //startActivity(leadQR);
+                Intent leadQR = new Intent(parentMain.this, QueueActivity.class);
+                startActivity(leadQR);
             }
         });
 
