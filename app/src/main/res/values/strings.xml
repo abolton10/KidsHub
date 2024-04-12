@@ -47,4 +47,5 @@
     <string name="teacher_page">Teacher Page</string>
     <string name="was_your_child_picked_up_safely">Was your child picked up safely?</string>
     <string name="view_position_in_queue">View Position in Queue</string>
+    <string name="join_queue">Join Queue</string>
 </resources>

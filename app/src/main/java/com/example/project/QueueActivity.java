@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -37,11 +38,9 @@ public class QueueActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 123;
     private DatabaseReference parentQueueRef, parentRef, studentRef, positionRef; //reference position
     private ImageView imageView; //qrcode
-    private TextView queuePositionText;
-    private Button back, viewqueue;
+    private Button back, viewqueue, joinQueue;
     private FirebaseAuth mAuth;
     private String currentUser;
-    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class QueueActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         viewqueue = findViewById(R.id.viewqueue);
         mAuth = FirebaseAuth.getInstance();
-        textView = findViewById(R.id.user_details);
+        joinQueue = findViewById(R.id.joinQueue);
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         viewqueue.setOnClickListener(v -> {
@@ -67,15 +66,10 @@ public class QueueActivity extends AppCompatActivity {
             Intent intent = new Intent(QueueActivity.this, parentMain.class);
             startActivity(intent);
         });
-        Button confirmPickupYes = findViewById(R.id.confirm_pickup_yes);
-        Button confirmPickupNo = findViewById(R.id.confirm_pickup_no);
 
-        confirmPickupYes.setOnClickListener(v -> {
-            leaveQueueAndUpdatePosition(true); // Confirm pickup
-        });
-
-        confirmPickupNo.setOnClickListener(v -> {
-            leaveQueueAndUpdatePosition(false); // Reject pickup
+        joinQueue.setOnClickListener(v -> {
+            // Increment the queue and position by one
+            setupJoinQueueButton();
         });
 
         requestLocationPermissions();
@@ -133,47 +127,68 @@ public class QueueActivity extends AppCompatActivity {
         generateQRCode();
     }
 
-    private void generateQRCode() {
-        // Generate QR code for the parent based on the database's SId
+    private void setupJoinQueueButton() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            generateQRCodeWithQueue(userId);
+            DatabaseReference parentRef = FirebaseDatabase.getInstance().getReference().child("Parent").child(userId);
+
+            parentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        int position = dataSnapshot.child("position").getValue(Integer.class);
+                        // Increment both the queue and the position by one
+                        parentQueueRef.setValue(position + 1);
+                        parentRef.child("position").setValue(position + 1);
+                        Toast.makeText(QueueActivity.this, "Joined the queue!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Handle case where parent data does not exist
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle error
+                }
+            });
         } else {
-            // Handle if the user is not authenticated
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            // Handle case where user is not authenticated
         }
     }
 
-    private void generateQRCodeWithQueue(String userId) {
-        // Increment the queue in the database
-        parentQueueRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    int currentQueue = dataSnapshot.getValue(Integer.class);
-                    int newQueue = currentQueue + 1;
+    private void generateQRCode() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference parentRef = FirebaseDatabase.getInstance().getReference().child("Parent").child(userId);
 
-                    // Update the queue in the database
-                    parentQueueRef.setValue(newQueue);
-
-                    // Update the position of the current user in the database
-                    parentRef.child(userId).child("position").setValue(newQueue);
-
-                    // Generate QR code using the new queue number
-                    generateQRCodeWithQueueNumber(String.valueOf(newQueue));
+            parentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String SId = dataSnapshot.child("SId").getValue(String.class);
+                        // Generate QR code using SId
+                        generateQRCode(SId);
+                    } else {
+                        // Handle case where parent data does not exist
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle error
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Handle error
+                }
+            });
+        } else {
+            // Handle case where user is not authenticated
+        }
     }
 
-    private void generateQRCodeWithQueueNumber(String queueNumber) {
-        String data = queueNumber; // Use queue number as data for QR code
+    private void generateQRCode(String SId) {
+        // Combine parent ID and SId
+        String data = SId;
+
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
@@ -186,62 +201,5 @@ public class QueueActivity extends AppCompatActivity {
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void confirmPickupDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Pickup");
-        builder.setMessage("Was your child picked up safely?");
-
-        // Add the buttons
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked Yes button
-                leaveQueueAndUpdatePosition(true);
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked No button
-                leaveQueueAndUpdatePosition(false);
-            }
-        });
-
-        // Create and show the AlertDialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void leaveQueueAndUpdatePosition(boolean pickedUpSafely) {
-        // Remove the parent from the queue
-        parentRef.child(currentUser).child("position").removeValue();
-
-        // If the child was picked up safely, decrement the queue
-        if (pickedUpSafely) {
-            queueDecrement();
-        }
-    }
-
-    private void queueDecrement() {
-        DatabaseReference parentRef = FirebaseDatabase.getInstance().getReference().child("Parent");
-
-        parentQueueRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    int currentQueue = dataSnapshot.getValue(Integer.class);
-                    int newQueue = currentQueue - 1;
-                    if (newQueue < 0) {
-                        newQueue = 0; // Ensure queue doesn't go negative
-                    }
-                    parentQueueRef.setValue(newQueue);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle error
-            }
-        });
     }
 }

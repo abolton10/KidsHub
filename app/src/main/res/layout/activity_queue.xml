@@ -18,14 +18,14 @@
         <!-- Pickup confirmation text -->
 
     <!-- Button to view user's position in the queue -->
-    <TextView
-        android:id="@+id/user_details"
+    <Button
+        android:id="@+id/joinQueue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/viewqueue"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:text="@string/was_your_child_picked_up_safely" />
+        android:text="@string/join_queue" />
 
     <Button
         android:id="@+id/viewqueue"
@@ -35,33 +35,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:text="@string/view_position_in_queue" />
-
-    <!-- Yes button -->
-
-    <!-- No button -->
-
-    <!-- Back button -->
-
-    <Button
-        android:id="@+id/confirm_pickup_yes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
-        android:text="Yes" />
-
-    <Button
-        android:id="@+id/confirm_pickup_no"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="147dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
-        android:layout_toEndOf="@id/confirm_pickup_yes"
-        android:text="No" />
 
     <Button
         android:id="@+id/back"
